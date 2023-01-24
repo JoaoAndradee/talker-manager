@@ -15,9 +15,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@joi/date": "^2.1.0",
     "crypto-js": "4.0.0",
     "express": "4.17.1",
-    "express-rescue": "1.1.30"
+    "express-rescue": "1.1.30",
+    "moment": "^2.29.4",
+    "validate-date": "^2.0.0"
   },
   "devDependencies": {
     "chai": "4.3.4",

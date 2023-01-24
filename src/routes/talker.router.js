@@ -1,5 +1,14 @@
 const express = require('express');
-const { getTalkers } = require('../utils/talkerUtils');
+const {
+  getTalkers,
+  writeTalkers,
+  tokenValidationMiddleware,
+  nameValidationMiddleware,
+  ageValidationMiddleware,
+  talkValidationMiddleware,
+  watchedValidationMiddleware,
+  rateValidationMiddleware,
+} = require('../utils/talkerUtils');
 
 const router = express.Router();
 
@@ -17,5 +26,21 @@ router.get('/talker/:id', async (req, res) => {
   }
   return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
 });
+
+router.post(
+  '/talker',
+  tokenValidationMiddleware,
+  nameValidationMiddleware,
+  ageValidationMiddleware,
+  talkValidationMiddleware,
+  watchedValidationMiddleware,
+  rateValidationMiddleware,
+  async (req, res) => {
+    const allTalkers = await getTalkers();
+    const newTalker = { id: allTalkers[allTalkers.length - 1].id + 1, ...req.body };
+    await writeTalkers([...allTalkers, newTalker]);
+    res.status(201).json({ ...newTalker });
+},
+);
 
 module.exports = router;

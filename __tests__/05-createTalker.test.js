@@ -453,7 +453,7 @@ describe('5 - Crie o endpoint POST /talker', () => {
           });
       });
   });
-  
+
   it('Será validado que não é possível cadastrar uma pessoa palestrante com rate com número decimal', async () => {
     await frisby
       .post(`${url}/login`, {
