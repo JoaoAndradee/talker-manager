@@ -8,6 +8,7 @@ const {
   talkValidationMiddleware,
   watchedValidationMiddleware,
   rateValidationMiddleware,
+  rateMoreValidation,
 } = require('../utils/talkerUtils');
 
 const router = express.Router();
@@ -35,6 +36,7 @@ router.post(
   talkValidationMiddleware,
   watchedValidationMiddleware,
   rateValidationMiddleware,
+  rateMoreValidation,
   async (req, res) => {
     const allTalkers = await getTalkers();
     const newTalker = { id: allTalkers[allTalkers.length - 1].id + 1, ...req.body };
@@ -42,5 +44,27 @@ router.post(
     res.status(201).json({ ...newTalker });
 },
 );
+
+router.put(
+  '/talker/:id',
+  tokenValidationMiddleware,
+  nameValidationMiddleware,
+  ageValidationMiddleware,
+  talkValidationMiddleware,
+  watchedValidationMiddleware,
+  rateValidationMiddleware,
+  rateMoreValidation,
+  async (req, res) => {
+    const { id } = req.params;
+    const allTalkers = await getTalkers();
+    let filteredTalker = allTalkers.find((talker) => Number(talker.id) === Number(id));
+    filteredTalker = { id: JSON.parse(id), ...req.body };
+    const newTalkers = allTalkers.filter((item) => Number(item.id) !== Number(id));
+    newTalkers.push({ id, ...filteredTalker });
+    await writeTalkers(newTalkers);
+
+    return res.status(200).json({ id, ...filteredTalker });
+  },
+  );
 
 module.exports = router;
