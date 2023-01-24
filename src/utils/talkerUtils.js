@@ -1,7 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
 const moment = require('moment');
-// teste
 
 const getTalkers = async () => {
   try {
