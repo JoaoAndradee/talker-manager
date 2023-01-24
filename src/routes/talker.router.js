@@ -9,6 +9,7 @@ const {
   watchedValidationMiddleware,
   rateValidationMiddleware,
   rateMoreValidation,
+  talkerDelete,
 } = require('../utils/talkerUtils');
 
 const router = express.Router();
@@ -66,5 +67,11 @@ router.put(
     return res.status(200).json({ id, ...filteredTalker });
   },
   );
+
+router.delete('/talker/:id', tokenValidationMiddleware, async (req, res) => {
+  const { id } = req.params;
+  await talkerDelete(Number(id));
+  res.status(204).json({ message: 'usuario deletado' });
+});
 
 module.exports = router;

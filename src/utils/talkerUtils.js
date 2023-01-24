@@ -78,6 +78,12 @@ const rateMoreValidation = (req, res, next) => {
   next();
 };
 
+const talkerDelete = async (id) => {
+  const allTalkers = await getTalkers();
+  const filteredTalkers = allTalkers.filter((talker) => Number(talker.id) !== Number(id));
+  return writeTalkers(filteredTalkers);
+};
+
 module.exports = {
   getTalkers,
   writeTalkers,
@@ -88,4 +94,5 @@ module.exports = {
   watchedValidationMiddleware,
   rateValidationMiddleware,
   rateMoreValidation,
+  talkerDelete,
 };
