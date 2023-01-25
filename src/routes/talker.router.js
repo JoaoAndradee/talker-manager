@@ -10,6 +10,7 @@ const {
   rateValidationMiddleware,
   rateMoreValidation,
   talkerDelete,
+  filteredTalkers,
 } = require('../utils/talkerUtils');
 
 const router = express.Router();
@@ -17,6 +18,15 @@ const router = express.Router();
 router.get('/talker', async (_req, res) => {
     const talkers = await getTalkers();
     res.status(200).json(talkers);
+});
+
+router.get('/talker/search', tokenValidationMiddleware, async (req, res) => {
+  const { q } = req.query;
+  const talkers = await getTalkers();
+  const filter = await filteredTalkers(q);
+  if (!q) return res.status(200).json(talkers);
+  if (!filter.length) return res.status(200).json([]);
+  return res.status(200).json(filter);
 });
 
 router.get('/talker/:id', async (req, res) => {

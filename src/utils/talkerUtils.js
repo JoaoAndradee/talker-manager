@@ -84,6 +84,12 @@ const talkerDelete = async (id) => {
   return writeTalkers(filteredTalkers);
 };
 
+const filteredTalkers = async (name) => {
+  const allTalkers = await getTalkers();
+  const filteredTalkersByName = allTalkers.filter((talker) => talker.name.includes(name));
+  return filteredTalkersByName;
+};
+
 module.exports = {
   getTalkers,
   writeTalkers,
@@ -95,4 +101,5 @@ module.exports = {
   rateValidationMiddleware,
   rateMoreValidation,
   talkerDelete,
+  filteredTalkers,
 };
